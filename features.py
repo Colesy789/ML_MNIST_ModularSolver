@@ -25,6 +25,6 @@ def get_processed_data(train_dataset, test_dataset, mode, n_components=None, is_
         x_test = pca.transform(x_test) # Use learned patterns to transform test data
         print(f"Total Variance Explained: {sum(pca.explained_variance_ratio_) * 100:.2f}%")
     
-    # Convert back to Tensors ans Scikit-learn (PCA) returns NumPy arrays. PyTorch needs Tensors.
+    # Convert back to Tensors and Scikit-learn (PCA) returns NumPy arrays. PyTorch needs Tensors.
     return (torch.tensor(x_train).float(), y_train, 
             torch.tensor(x_test).float(), y_test)

@@ -1,27 +1,27 @@
 import torch
 import torch.nn as nn
 
-class CNNModel(nn.Module):
+class CNNModel(nn.Module): #standard "LeNet-style" architecture
     def __init__(self):
         super(CNNModel, self).__init__()
         # Layer 1: Looks for 16 different patterns using 3x3 filters
-        self.conv1 = nn.Conv2d(1, 16, kernel_size=3, padding=1)
-        self.pool = nn.MaxPool2d(2, 2) # Shrinks 28x28 to 14x14
+        self.conv1 = nn.Conv2d(1, 16, kernel_size=3, padding=1) # Finds 16 simple features (lines/edges).
+        # Feature Extraction: 28x28 -> 14x14
+        self.pool = nn.MaxPool2d(2, 2) # Shrinks 28x28 to 14x14 by looking at groups of 4 pixels and taking the max value
         
-        # Layer 2: Shrinks 14x14 to 7x7
-        self.conv2 = nn.Conv2d(16, 32, kernel_size=3, padding=1)
-        
-        # Final Fully Connected Layers
+        self.conv2 = nn.Conv2d(16, 32, kernel_size=3, padding=1) # Combines those lines/edges into 32 complex shapes (circles/crosses).
+
+        # Final Fully Connected Layers as a classifier
         self.fc = nn.Sequential(
             nn.Flatten(), # Finally flatten to feed into the 10-digit output
-            nn.Linear(32 * 7 * 7, 128),
-            nn.ReLU(),
+            nn.Linear(32 * 7 * 7, 128), # Takes the 32 feature maps of 7x7 and learns 128 "concepts"
+            nn.ReLU(), # Removes negative values, helping the model learn complex shapes by introducing non-linearity
             nn.Linear(128, 10)
         )
 
     def forward(self, x):
-        x = self.pool(torch.relu(self.conv1(x)))
-        x = self.pool(torch.relu(self.conv2(x)))
+        x = self.pool(torch.relu(self.conv1(x))) # Shrinks 28x28 to 14x14
+        x = self.pool(torch.relu(self.conv2(x))) # Shrinks 14x14 to 7x7, now 32 feature maps of 7x7
         x = self.fc(x)
         return x
 
@@ -32,10 +32,10 @@ def get_model(model_choice, n_features, dropout_rate=0.2):
             nn.Linear(n_features, 10) # No hidden layers. It looks at the features and votes directly for a digit.
         )
     elif model_choice == "2":
-        # Complex Multi-Layer Perceptron
+        # Multi-Layer Perceptron
         return nn.Sequential(
             nn.Linear(n_features, 128), # Takes 'n_features' and expands them into 128 "concepts"
-            nn.ReLU(), # Removes negative values, helping the model learn complex shapes.
+            nn.ReLU(), # Removes negative values, helping the model learn complex shapes by introducing non-linearity
             nn.Linear(128, 10) # Compresses those 128 concepts down to 10 (the digits 0-9)
         )
     elif model_choice == "3":

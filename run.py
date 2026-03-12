@@ -17,7 +17,6 @@ transform = transforms.Compose([
     transforms.Normalize((0.5,), (0.5,))
 ])
 
-# Download the MNIST dataset
 # Training Data
 train_dataset = torchvision.datasets.MNIST(
     root='./data',      # Where to store the data
@@ -38,10 +37,10 @@ test_dataset = torchvision.datasets.MNIST(
 
 print("--- MNIST Machine Learning Project ---")
 
-# 1. Choose Feature Selection
+# Choose Feature Selection
 print("\nAvailable Feature Selection:")
 print("1. Raw Pixels (784 features)")
-print("2. PCA (Reduced to 50 features)")
+print("2. PCA (Reduced to n features, ignored for CNN)")
 feature_choice = input("Select (1 or 2): ")
 
 # Initialize the number of features
