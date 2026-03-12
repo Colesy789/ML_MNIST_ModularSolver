@@ -22,7 +22,7 @@ train_dataset = torchvision.datasets.MNIST(
     root='./data',      # Where to store the data
     train=True,         # Training set not test set
     download=True,      # Download if not present
-    transform=transform # Apply the transformations we defined above
+    transform=transform # Apply the transformation defined above
 )
 
 # Test Data
@@ -58,7 +58,7 @@ print("\nAvailable Models:")
 print("1. Simple Linear (Fast)")
 print("2. Multi-Layer Perceptron (Standard)")
 print("3. Multi-Layer Perceptron (Dropout & Batch Normalization)") # forces the model to find multiple ways to recognize a digit, rather than relying on one specific pixel pattern
-print("4. Convolutional Neural Network (Best for Images, but more complex)")
+print("4. Convolutional Neural Network (Best for Images, more complex)")
 model_choice = input("Select (1, 2, 3, or 4): ")
 
 if model_choice == "3":
@@ -88,7 +88,7 @@ x_train, y_train, x_test, y_test = get_processed_data(
     train_dataset, test_dataset, selection_mode, n_features, is_cnn
 )
 
-# Create the DataLoaders using the PROCESSED data
+# Create the DataLoaders using the processed data
 # TensorDataset used because the data is now custom tensors, not raw MNIST images
 train_loader = DataLoader(TensorDataset(x_train, y_train), batch_size=64, shuffle=True)
 test_loader = DataLoader(TensorDataset(x_test, y_test), batch_size=64, shuffle=False)

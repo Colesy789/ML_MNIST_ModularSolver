@@ -3,18 +3,18 @@ from sklearn.decomposition import PCA
 
 def get_processed_data(train_dataset, test_dataset, mode, n_components=None, is_cnn=False):
     
-    y_train = train_dataset.targets
+    y_train = train_dataset.targets # List of int labels (0-9) for each training image
     y_test = test_dataset.targets
 
     if is_cnn:
         # Keep the 2D shape (Channels=1, H=28, W=28)
-        # We add the .unsqueeze(1) to add the "Channel" dimension
+        # .unsqueeze(1) to add the "Channel" dimension
         x_train = train_dataset.data.float().unsqueeze(1) 
         x_test = test_dataset.data.float().unsqueeze(1)
         return x_train, y_train, x_test, y_test
 
     # Flatten the 28x28 images into 784 vectors
-    x_train = train_dataset.data.float().view(-1, 784).numpy()
+    x_train = train_dataset.data.float().view(-1, 784).numpy() # Flattern and convert to NumPy for SkiLearn PCA
     x_test = test_dataset.data.float().view(-1, 784).numpy()
 
     # Apply user selection
